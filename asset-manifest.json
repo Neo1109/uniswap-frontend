@@ -1,7 +1,7 @@
 {
-  "main.css": "./static/css/main.ac739e1f.chunk.css",
-  "main.js": "./static/js/main.906b1779.chunk.js",
-  "main.js.map": "./static/js/main.906b1779.chunk.js.map",
+  "main.css": "./static/css/main.9e4279af.chunk.css",
+  "main.js": "./static/js/main.52e15ad3.chunk.js",
+  "main.js.map": "./static/js/main.52e15ad3.chunk.js.map",
   "static/js/1.d6b3c91a.chunk.js": "./static/js/1.d6b3c91a.chunk.js",
   "static/js/1.d6b3c91a.chunk.js.map": "./static/js/1.d6b3c91a.chunk.js.map",
   "runtime~main.js": "./static/js/runtime~main.4a686d48.js",
@@ -20,8 +20,8 @@
   "static/media/plus-blue.svg": "./static/media/plus-blue.e8021e51.svg",
   "static/media/plus-grey.svg": "./static/media/plus-grey.d8e0be7d.svg",
   "static/media/generic-token-logo.png": "./static/media/generic-token-logo.c73674bb.png",
-  "static/css/main.ac739e1f.chunk.css.map": "./static/css/main.ac739e1f.chunk.css.map",
+  "static/css/main.9e4279af.chunk.css.map": "./static/css/main.9e4279af.chunk.css.map",
   "index.html": "./index.html",
-  "precache-manifest.ee912efa7ef84883dfa73d86434371cb.js": "./precache-manifest.ee912efa7ef84883dfa73d86434371cb.js",
+  "precache-manifest.a06e8071c1a65dab27a65228097701f1.js": "./precache-manifest.a06e8071c1a65dab27a65228097701f1.js",
   "service-worker.js": "./service-worker.js"
 }
