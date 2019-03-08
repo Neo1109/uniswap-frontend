@@ -1,7 +1,7 @@
 {
-  "main.css": "./static/css/main.cad84b91.chunk.css",
-  "main.js": "./static/js/main.ba831435.chunk.js",
-  "main.js.map": "./static/js/main.ba831435.chunk.js.map",
+  "main.css": "./static/css/main.9b9626ab.chunk.css",
+  "main.js": "./static/js/main.d2fc5bb4.chunk.js",
+  "main.js.map": "./static/js/main.d2fc5bb4.chunk.js.map",
   "static/js/1.a88ec8af.chunk.js": "./static/js/1.a88ec8af.chunk.js",
   "static/js/1.a88ec8af.chunk.js.map": "./static/js/1.a88ec8af.chunk.js.map",
   "runtime~main.js": "./static/js/runtime~main.4a686d48.js",
@@ -10,7 +10,7 @@
   "static/media/arrow-down-blue.svg": "./static/media/arrow-down-blue.cd061363.svg",
   "static/media/arrow-down-grey.svg": "./static/media/arrow-down-grey.c0dedd2f.svg",
   "static/media/dropup-blue.svg": "./static/media/dropup-blue.b96d70e1.svg",
-  "static/media/unicorn.svg": "./static/media/unicorn.d7b009b3.svg",
+  "static/media/unicorn.svg": "./static/media/unicorn.e21d52da.svg",
   "static/media/trust-wallet-logo.svg": "./static/media/trust-wallet-logo.0be980e8.svg",
   "static/media/brave-logo.svg": "./static/media/brave-logo.88fbacb4.svg",
   "static/media/metamask-logo.svg": "./static/media/metamask-logo.c1ff6169.svg",
@@ -20,8 +20,8 @@
   "static/media/plus-blue.svg": "./static/media/plus-blue.e8021e51.svg",
   "static/media/plus-grey.svg": "./static/media/plus-grey.d8e0be7d.svg",
   "static/media/generic-token-logo.png": "./static/media/generic-token-logo.c73674bb.png",
-  "static/css/main.cad84b91.chunk.css.map": "./static/css/main.cad84b91.chunk.css.map",
+  "static/css/main.9b9626ab.chunk.css.map": "./static/css/main.9b9626ab.chunk.css.map",
   "index.html": "./index.html",
-  "precache-manifest.617726cf390e1b4f84de3071a451e177.js": "./precache-manifest.617726cf390e1b4f84de3071a451e177.js",
+  "precache-manifest.2078067dcb09f884cbfb4a990a16aa80.js": "./precache-manifest.2078067dcb09f884cbfb4a990a16aa80.js",
   "service-worker.js": "./service-worker.js"
 }
