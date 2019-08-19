@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { Link } from '../../theme'
+import Unicorn from '../../assets/images/unicorn.svg'
 import Web3Status from '../Web3Status'
 import { darken } from 'polished'
 
@@ -58,14 +59,12 @@ export default function Header() {
       <HeaderElement>
         <Title>
           <Nod>
-            <Link id="link" href="https://uniswap.io">
-              <span role="img" aria-label="unicorn">
-                🦄{'  '}
-              </span>
+            <Link id="link" href="https://uniswap.ch">
+	  	<Unicorn width="40px" height="70px" />
             </Link>
           </Nod>
-          <Link id="link" href="https://uniswap.io">
-            <h1 id="title">Uniswap</h1>
+          <Link id="link" href="https://uniswap.ch">
+            <h1 id="title">Uniswap.ch</h1>
           </Link>
         </Title>
       </HeaderElement>
