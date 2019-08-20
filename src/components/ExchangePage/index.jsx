@@ -46,7 +46,7 @@ const DownArrowBackground = styled.div`
 
 const WrappedArrowDown = ({ clickable, active, ...rest }) => <ArrowDown {...rest} />
 const DownArrow = styled(WrappedArrowDown)`
-  color: ${({ theme, active }) => (active ? theme.royalBlue : theme.chaliceGray)};
+  color: ${({ theme, active }) => (active ? theme.uniswapBlue : theme.uniswapDarkblue)};
   width: 0.625rem;
   height: 0.625rem;
   position: relative;
