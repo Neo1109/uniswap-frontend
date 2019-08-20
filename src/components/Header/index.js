@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { Link } from '../../theme'
-import Unicorn from '../../assets/images/unicorn.svg'
+import LogoUnicorn from '../../assets/images/unicorn.svg'
 import Web3Status from '../Web3Status'
 import { darken } from 'polished'
 
@@ -21,7 +21,7 @@ const HeaderElement = styled.div`
   align-items: center;
 `
 
-const Nod = styled.span`
+const Nod = styled.div`
   transform: rotate(0deg);
   transition: transform 150ms ease-out;
 
@@ -60,7 +60,7 @@ export default function Header() {
         <Title>
           <Nod>
             <Link id="link" href="https://uniswap.ch">
-	  	<Unicorn width="40px" height="70px" />
+	      <img src={LogoUnicorn} alt="unicorn" height="70px" />
             </Link>
           </Nod>
           <Link id="link" href="https://uniswap.ch">
