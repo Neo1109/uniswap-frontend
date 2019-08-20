@@ -39,16 +39,16 @@ const Title = styled.div`
   }
 
   #link {
-    text-decoration-color: ${({ theme }) => theme.UniswapPink};
+    text-decoration-color: ${({ theme }) => theme.UniswapBlue};
   }
 
   #title {
     display: inline;
     font-size: 1rem;
     font-weight: 500;
-    color: ${({ theme }) => theme.wisteriaPurple};
+    color: ${({ theme }) => theme.uniswapBlue};
     :hover {
-      color: ${({ theme }) => darken(0.1, theme.wisteriaPurple)};
+      color: ${({ theme }) => theme.uniswapDarkblue};
     }
   }
 `
