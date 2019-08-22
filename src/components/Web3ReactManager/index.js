@@ -18,7 +18,7 @@ const MessageWrapper = styled.div`
 `
 
 const Message = styled.h2`
-  color: ${({ theme }) => theme.uniswapPink};
+  color: ${({ theme }) => theme.uniswapBlue};
 `
 
 const SpinnerWrapper = styled(Spinner)`
@@ -26,7 +26,7 @@ const SpinnerWrapper = styled(Spinner)`
 
   svg {
     path {
-      color: ${({ theme }) => theme.uniswapPink};
+      color: ${({ theme }) => theme.uniswapBlue};
     }
   }
 `
