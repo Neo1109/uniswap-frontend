@@ -20,7 +20,7 @@ const UPDATE = 'UPDATE'
 
 const ETH = {
   ETH: {
-    [NAME]: 'Ethereum',
+    [NAME]: 'Ether',
     [SYMBOL]: 'ETH',
     [DECIMALS]: 18,
     [EXCHANGE_ADDRESS]: null
