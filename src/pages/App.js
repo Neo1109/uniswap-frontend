@@ -58,7 +58,7 @@ export default function App() {
           <BodyWrapper>
             <Body>
               <Web3ReactManager>
-                <BrowserRouter basename={process.env.PUBLIC_URL}>
+                <BrowserRouter>
                   <NavigationTabs />
                   {/* this Suspense is for route code-splitting */}
                   <Suspense fallback={null}>
