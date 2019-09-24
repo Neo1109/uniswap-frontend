@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react'
 import styled from 'styled-components'
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 
 import Web3ReactManager from '../components/Web3ReactManager'
 import Header from '../components/Header'
@@ -58,7 +58,7 @@ export default function App() {
           <BodyWrapper>
             <Body>
               <Web3ReactManager>
-                <BrowserRouter>
+                <HashRouter>
                   <NavigationTabs />
                   {/* this Suspense is for route code-splitting */}
                   <Suspense fallback={null}>
@@ -101,7 +101,7 @@ export default function App() {
                       <Redirect to="/swap" />
                     </Switch>
                   </Suspense>
-                </BrowserRouter>
+                </HashRouter>
               </Web3ReactManager>
             </Body>
           </BodyWrapper>
