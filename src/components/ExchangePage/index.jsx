@@ -127,7 +127,11 @@ function getInitialSwapState(state) {
     independentField: state.exactFieldURL === 'output' ? OUTPUT : INPUT,
     inputCurrency: state.inputCurrencyURL ? state.inputCurrencyURL : 'ETH',
     outputCurrency: state.outputCurrencyURL
-      ? state.outputCurrencyURL
+      ? state.outputCurrencyURL === 'ETH'
+        ? state.inputCurrencyURL && state.inputCurrencyURL !== 'ETH'
+          ? 'ETH'
+          : ''
+        : state.outputCurrencyURL
       : state.initialCurrency
       ? state.initialCurrency
       : ''
@@ -386,7 +390,6 @@ export default function ExchangePage({ initialCurrency, sending = false, params 
         setInputError(null)
         setShowUnlock(false)
       }
-
       return () => {
         setInputError()
         setShowUnlock(false)

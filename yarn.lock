@@ -4026,7 +4026,15 @@ commander@2.17.x:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
   integrity sha512-wPMUt6FnH2yzG95SA6mzjQOEKUU3aLaDEmzs1ti+1E9h+CsrZghRlqEM/EJ4KscsQVG8uNN4uVreUeT8+drlgg==
 
+<<<<<<< HEAD
 commander@^2.11.0, commander@^2.18.0, commander@^2.20.0, commander@~2.20.0:
+=======
+<<<<<<< HEAD
+commander@^2.11.0, commander@^2.18.0, commander@^2.20.0, commander@^2.8.1, commander@~2.20.0:
+=======
+commander@^2.11.0, commander@^2.20.0, commander@~2.20.0:
+>>>>>>> 2c1c076d599a657f7a4572d5221f8aeeceae9d3b
+>>>>>>> dev2
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.0.tgz#d58bb2b5c1ee8f87b0d340027e9e94e222c5a422"
   integrity sha512-7j2y+40w61zy6YC2iRNpUe/NwhNyoXrYpHMrSunaMG64nRnaf96zO/KMQR4OyN/UnE5KLyEBnKHd4aG3rskjpQ==
@@ -9447,11 +9455,15 @@ mime-db@1.40.0:
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.40.0.tgz#a65057e998db090f732a68f6c276d387d4126c32"
   integrity sha512-jYdeOMPy9vnxEqFRRo6ZvTZ8d9oPb+k18PKoYNYUe2stVEBPPwsln/qWzdbmaIvnhZ9v2P+CuecK+fpUfsV2mA==
 
+<<<<<<< HEAD
 "mime-db@>= 1.40.0 < 2":
   version "1.41.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.41.0.tgz#9110408e1f6aa1b34aef51f2c9df3caddf46b6a0"
   integrity sha512-B5gxBI+2K431XW8C2rcc/lhppbuji67nf9v39eH8pkWoZDxnAL0PxdpH32KYRScniF8qDHBDlI+ipgg5WrCUYw==
 
+=======
+<<<<<<< HEAD
+>>>>>>> dev2
 mime-db@~1.33.0:
   version "1.33.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.33.0.tgz#a3492050a5cb9b63450541e39d9788d2272783db"
@@ -9463,6 +9475,15 @@ mime-types@2.1.18:
   integrity sha512-lc/aahn+t4/SWV/qcmumYjymLsWfN3ELhpmVuUFjgsORruuZPVSwAQryq+HHGvO/SI2KVX26bx+En+zhM8g8hQ==
   dependencies:
     mime-db "~1.33.0"
+<<<<<<< HEAD
+=======
+=======
+"mime-db@>= 1.40.0 < 2":
+  version "1.41.0"
+  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.41.0.tgz#9110408e1f6aa1b34aef51f2c9df3caddf46b6a0"
+  integrity sha512-B5gxBI+2K431XW8C2rcc/lhppbuji67nf9v39eH8pkWoZDxnAL0PxdpH32KYRScniF8qDHBDlI+ipgg5WrCUYw==
+>>>>>>> 2c1c076d599a657f7a4572d5221f8aeeceae9d3b
+>>>>>>> dev2
 
 mime-types@^2.1.12, mime-types@^2.1.16, mime-types@~2.1.17, mime-types@~2.1.19, mime-types@~2.1.24:
   version "2.1.24"
@@ -11632,12 +11653,23 @@ punycode@1.3.2:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.3.2.tgz#9653a036fb7c1ee42342f2325cceefea3926c48d"
   integrity sha1-llOgNvt8HuQjQvIyXM7v6jkmxI0=
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+punycode@^1.2.4, punycode@^1.3.2, punycode@^1.4.1:
+=======
+>>>>>>> dev2
 punycode@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.0.tgz#5f863edc89b96db09074bad7947bf09056ca4e7d"
   integrity sha1-X4Y+3Im5bbCQdLrXlHvwkFbKTn0=
 
+<<<<<<< HEAD
 punycode@^1.2.4, punycode@^1.3.2, punycode@^1.4.1:
+=======
+punycode@^1.2.4, punycode@^1.4.1:
+>>>>>>> 2c1c076d599a657f7a4572d5221f8aeeceae9d3b
+>>>>>>> dev2
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
   integrity sha1-wNWmOycYgArY4esPpSachN1BhF4=
@@ -11848,7 +11880,15 @@ react-ga@^2.5.7:
   resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.6.0.tgz#c3fe830ead2ad25117e1d33280d9698de9b28496"
   integrity sha512-GWHBWZDFjDGMkIk1LzroIn0mNTygKw3adXuqvGvheFZvlbpqMPbHsQsTdQBIxRRdXGQM/Zq+dQLRPKbwIHMTaw==
 
+<<<<<<< HEAD
 react-i18next@^10.12.2:
+=======
+<<<<<<< HEAD
+react-i18next@^10.12.2:
+=======
+react-i18next@^10.7.0:
+>>>>>>> 2c1c076d599a657f7a4572d5221f8aeeceae9d3b
+>>>>>>> dev2
   version "10.12.2"
   resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-10.12.2.tgz#2f2d79b84c1f3e3844d110e4c9d5c73a48f99418"
   integrity sha512-tZCBhUz8rJtgmTi1z2pWEoQBvFHjwOS2+TQ7L4RfJq1LDirXi2m+3Pwg6gUECVCGenWomLufWNiTwRF9fmBrUQ==
@@ -12525,7 +12565,15 @@ rimraf@2.6.3:
   dependencies:
     glob "^7.1.3"
 
+<<<<<<< HEAD
 rimraf@^2.2.8, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@^2.6.3:
+=======
+<<<<<<< HEAD
+rimraf@^2.6.2:
+=======
+rimraf@^2.2.8, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.3:
+>>>>>>> 2c1c076d599a657f7a4572d5221f8aeeceae9d3b
+>>>>>>> dev2
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
   integrity sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
@@ -14014,11 +14062,25 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+type-fest@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.5.2.tgz#d6ef42a0356c6cd45f49485c3b6281fc148e48a2"
+  integrity sha512-DWkS49EQKVX//Tbupb9TFa19c7+MK1XmzkrZUR8TAktmE/DizXoaoJV6TZ/tSIPXipqNiRI6CyAe7x69Jb6RSw==
+
+>>>>>>> dev2
 type-fest@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.6.0.tgz#8d2a2370d3df886eb5c90ada1c5bf6188acf838b"
   integrity sha512-q+MB8nYR1KDLrgr4G5yemftpMC7/QLqVndBmEEdqzmNj5dcFOO4Oo8qlwZE3ULT3+Zim1F8Kq4cBnikNhlCMlg==
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 2c1c076d599a657f7a4572d5221f8aeeceae9d3b
+>>>>>>> dev2
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"
   resolved "https://registry.yarnpkg.com/type-is/-/type-is-1.6.18.tgz#4e552cd05df09467dcbc4ef739de89f2cf37c131"
