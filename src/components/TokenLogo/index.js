@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { isAddress } from '../../utils'
 
 import { ReactComponent as EthereumLogo } from '../../assets/images/ethereum-logo.svg'
 
 const TOKEN_ICON_API = address =>
-  `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
+  `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
+    address
+  )}/logo.png`
 const BAD_IMAGES = {}
 
 const Image = styled.img`
@@ -15,6 +18,9 @@ const Image = styled.img`
 `
 
 const Emoji = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: ${({ size }) => size};
   height: ${({ size }) => size};
 `
