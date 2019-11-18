@@ -43,15 +43,9 @@ const BetaMessage = styled.div`
   padding: 0.5rem 1rem;
   padding-right: 2rem;
   margin-bottom: 1rem;
-<<<<<<< HEAD
   border: 1px solid ${({ theme }) => theme.uniswapDarkblue};
   background-color: ${({ theme }) => theme.uniswapBlue};
-  border-radius: 2rem;
-=======
-  border: 1px solid ${({ theme }) => transparentize(0.6, theme.wisteriaPurple)};
-  background-color: ${({ theme }) => transparentize(0.9, theme.wisteriaPurple)};
   border-radius: 1rem;
->>>>>>> 6454848... Dai Migration - UI Updates (#503)
   font-size: 0.75rem;
   line-height: 1rem;
   text-align: left;
