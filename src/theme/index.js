@@ -124,7 +124,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body > div {
     height: 100%;
-    overflow: scroll;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
 
