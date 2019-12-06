@@ -1,0 +1,2 @@
+(this.webpackJsonpuniswap=this.webpackJsonpuniswap||[]).push([[13],{927:function(n,a,i){"use strict";i.r(a),i.d(a,"default",(function(){return s}));var r=i(0),t=i.n(r),e=i(843);function s(n){var a=n.initialCurrency,i=n.params;return t.a.createElement(e.a,{initialCurrency:a,params:i,sending:!0})}}}]);
+//# sourceMappingURL=13.db2d18c5.chunk.js.map
