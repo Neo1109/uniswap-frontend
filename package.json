@@ -19,6 +19,7 @@
     "escape-string-regexp": "^2.0.0",
     "ethers": "^4.0.36",
     "history": "^4.9.0",
+    "husky": "^3.1.0",
     "i18next": "^15.0.9",
     "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "^2.0.1",
