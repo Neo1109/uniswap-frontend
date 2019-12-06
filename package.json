@@ -18,6 +18,7 @@
     "copy-to-clipboard": "^3.2.0",
     "escape-string-regexp": "^2.0.0",
     "ethers": "^4.0.36",
+    "gh-pages": "^2.1.1",
     "history": "^4.9.0",
     "husky": "^3.1.0",
     "i18next": "^15.0.9",
@@ -74,4 +75,3 @@
     "prettier": "^1.17.0"
   }
 }
-
