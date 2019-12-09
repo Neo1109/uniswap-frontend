@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ethers } from 'ethers'
 import { BigNumber } from '@uniswap/sdk'
-import { useWeb3Context } from 'web3-react'
 import styled from 'styled-components'
 import escapeStringRegex from 'escape-string-regexp'
 import { darken } from 'polished'
@@ -12,7 +11,7 @@ import '@reach/tooltip/styles.css'
 import { isMobile } from 'react-device-detect'
 
 import { BorderlessInput } from '../../theme'
-import { useTokenContract } from '../../hooks'
+import { useWeb3React, useTokenContract } from '../../hooks'
 import { isAddress, calculateGasMargin, formatToUsd, formatTokenBalance, formatEthBalance } from '../../utils'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 import Modal from '../Modal'
@@ -20,6 +19,7 @@ import TokenLogo from '../TokenLogo'
 import SearchIcon from '../../assets/images/magnifying-glass.svg'
 import { useTransactionAdder, usePendingApproval } from '../../contexts/Transactions'
 import { useTokenDetails, useAllTokenDetails } from '../../contexts/Tokens'
+import { useAddressBalance } from '../../contexts/Balances'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { transparentize } from 'polished'
 import { Spinner } from '../../theme'
@@ -224,7 +224,10 @@ const TokenModalRow = styled.div`
     background-color: ${({ theme }) => theme.tokenRowHover};
   }
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`padding: 0.8rem 1rem;`}
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    padding: 0.8rem 1rem;
+    padding-right: 2rem;
+  `}
 `
 
 const TokenRowLeft = styled.div`
@@ -296,6 +299,10 @@ export default function CurrencyInputPanel({
 
   const allTokens = useAllTokenDetails()
 
+  const { account } = useWeb3React()
+
+  const userTokenBalance = useAddressBalance(account, selectedTokenAddress)
+
   function renderUnlockButton() {
     if (disableUnlock || !showUnlock || selectedTokenAddress === 'ETH' || !selectedTokenAddress) {
       return null
@@ -304,14 +311,26 @@ export default function CurrencyInputPanel({
         return (
           <SubCurrencySelect
             onClick={async () => {
-              const estimatedGas = await tokenContract.estimate.approve(
-                selectedTokenExchangeAddress,
-                ethers.constants.MaxUint256
-              )
-              tokenContract
-                .approve(selectedTokenExchangeAddress, ethers.constants.MaxUint256, {
-                  gasLimit: calculateGasMargin(estimatedGas, GAS_MARGIN)
+              let estimatedGas
+              let useUserBalance = false
+              estimatedGas = await tokenContract.estimate
+                .approve(selectedTokenExchangeAddress, ethers.constants.MaxUint256)
+                .catch(e => {
+                  console.log('Error setting max token approval.')
                 })
+              if (!estimatedGas) {
+                // general fallback for tokens who restrict approval amounts
+                estimatedGas = await tokenContract.estimate.approve(selectedTokenExchangeAddress, userTokenBalance)
+                useUserBalance = true
+              }
+              tokenContract
+                .approve(
+                  selectedTokenExchangeAddress,
+                  useUserBalance ? userTokenBalance : ethers.constants.MaxUint256,
+                  {
+                    gasLimit: calculateGasMargin(estimatedGas, GAS_MARGIN)
+                  }
+                )
                 .then(response => {
                   addTransaction(response, { approval: selectedTokenAddress })
                 })
@@ -336,9 +355,9 @@ export default function CurrencyInputPanel({
         <Input
           type="number"
           min="0"
+          step="0.000000000000000001"
           error={!!errorMessage}
           placeholder="0.0"
-          step="0.000000000000000001"
           onChange={e => onValueChange(e.target.value)}
           onKeyPress={e => {
             const charCode = e.which ? e.which : e.keyCode
@@ -409,7 +428,6 @@ export default function CurrencyInputPanel({
       {!disableTokenSelect && (
         <CurrencySelectModal
           isOpen={modalIsOpen}
-          // isOpen={true}
           onDismiss={() => {
             setModalIsOpen(false)
           }}
@@ -429,7 +447,7 @@ function CurrencySelectModal({ isOpen, onDismiss, onTokenSelect, allBalances }) 
 
   const allTokens = useAllTokenDetails()
 
-  const { account } = useWeb3Context()
+  const { account } = useWeb3React()
 
   // BigNumber.js instance
   const ethPrice = useUSDPrice()
@@ -589,6 +607,7 @@ function CurrencySelectModal({ isOpen, onDismiss, onTokenSelect, allBalances }) 
       isOpen={isOpen}
       onDismiss={clearInputAndDismiss}
       minHeight={60}
+      maxHeight={50}
       initialFocusRef={isMobile ? undefined : inputRef}
     >
       <TokenModal>

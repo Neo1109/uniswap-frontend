@@ -1,6 +1,6 @@
 import React, { useReducer, useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useWeb3Context } from 'web3-react'
+import { createBrowserHistory } from 'history'
 import { ethers } from 'ethers'
 import ReactGA from 'react-ga'
 import styled from 'styled-components'
@@ -10,8 +10,8 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import OversizedPanel from '../../components/OversizedPanel'
 import ContextualInfo from '../../components/ContextualInfo'
 import { ReactComponent as Plus } from '../../assets/images/plus-blue.svg'
-
-import { useExchangeContract } from '../../hooks'
+import { useWeb3React, useExchangeContract } from '../../hooks'
+import { brokenTokens } from '../../constants'
 import { amountFormatter, calculateGasMargin } from '../../utils'
 import { useTransactionAdder } from '../../contexts/Transactions'
 import { useTokenDetails } from '../../contexts/Tokens'
@@ -118,11 +118,19 @@ function calculateSlippageBounds(value) {
   }
 }
 
-const initialAddLiquidityState = {
-  inputValue: '',
-  outputValue: '',
-  lastEditedField: INPUT,
-  outputCurrency: ''
+function calculateMaxOutputVal(value) {
+  if (value) {
+    return value.mul(ethers.utils.bigNumberify(10000)).div(ALLOWED_SLIPPAGE.add(ethers.utils.bigNumberify(10000)))
+  }
+}
+
+function initialAddLiquidityState(state) {
+  return {
+    inputValue: state.ethAmountURL ? state.ethAmountURL : '',
+    outputValue: state.tokenAmountURL && !state.ethAmountURL ? state.tokenAmountURL : '',
+    lastEditedField: state.tokenAmountURL && state.ethAmountURL === '' ? OUTPUT : INPUT,
+    outputCurrency: state.tokenURL ? state.tokenURL : ''
+  }
 }
 
 function addLiquidityStateReducer(state, action) {
@@ -153,7 +161,7 @@ function addLiquidityStateReducer(state, action) {
       }
     }
     default: {
-      return initialAddLiquidityState
+      return initialAddLiquidityState()
     }
   }
 }
@@ -189,11 +197,21 @@ function getMarketRate(reserveETH, reserveToken, decimals, invert = false) {
   return getExchangeRate(reserveETH, 18, reserveToken, decimals, invert)
 }
 
-export default function AddLiquidity() {
+export default function AddLiquidity({ params }) {
   const { t } = useTranslation()
-  const { library, active, account } = useWeb3Context()
+  const { library, account, active } = useWeb3React()
 
-  const [addLiquidityState, dispatchAddLiquidityState] = useReducer(addLiquidityStateReducer, initialAddLiquidityState)
+  // clear url of query
+  useEffect(() => {
+    const history = createBrowserHistory()
+    history.push(window.location.pathname + '')
+  }, [])
+
+  const [addLiquidityState, dispatchAddLiquidityState] = useReducer(
+    addLiquidityStateReducer,
+    { ethAmountURL: params.ethAmount, tokenAmountURL: params.tokenAmount, tokenURL: params.token },
+    initialAddLiquidityState
+  )
   const { inputValue, outputValue, lastEditedField, outputCurrency } = addLiquidityState
   const inputCurrency = 'ETH'
 
@@ -201,6 +219,8 @@ export default function AddLiquidity() {
   const [outputValueParsed, setOutputValueParsed] = useState()
   const [inputError, setInputError] = useState()
   const [outputError, setOutputError] = useState()
+
+  const [brokenTokenWarning, setBrokenTokenWarning] = useState()
 
   const { symbol, decimals, exchangeAddress } = useTokenDetails(outputCurrency)
   const exchangeContract = useExchangeContract(exchangeAddress)
@@ -333,8 +353,10 @@ export default function AddLiquidity() {
   function renderSummary() {
     let contextualInfo = ''
     let isError = false
-
-    if (inputError || outputError) {
+    if (brokenTokenWarning) {
+      contextualInfo = t('brokenToken')
+      isError = true
+    } else if (inputError || outputError) {
       contextualInfo = inputError || outputError
       isError = true
     } else if (!inputCurrency || !outputCurrency) {
@@ -395,7 +417,16 @@ export default function AddLiquidity() {
 
   function formatBalance(value) {
     return `Balance: ${value}`
-  }
+  } // check for broken tokens
+
+  useEffect(() => {
+    setBrokenTokenWarning(false)
+    for (let i = 0; i < brokenTokens.length; i++) {
+      if (brokenTokens[i].toLowerCase() === outputCurrency.toLowerCase()) {
+        setBrokenTokenWarning(true)
+      }
+    }
+  }, [outputCurrency])
 
   useEffect(() => {
     if (isNewExchange) {
@@ -518,6 +549,7 @@ export default function AddLiquidity() {
   }, [inputValueParsed, inputBalance, outputValueMax, outputBalance, t])
 
   const allowance = useAddressAllowance(account, outputCurrency, exchangeAddress)
+
   const [showUnlock, setShowUnlock] = useState(false)
   useEffect(() => {
     if (outputValueParsed && allowance) {
@@ -533,7 +565,7 @@ export default function AddLiquidity() {
   }, [outputValueParsed, allowance, t])
 
   const isActive = active && account
-  const isValid = (inputError === null || outputError === null) && !showUnlock
+  const isValid = (inputError === null || outputError === null) && !showUnlock && !brokenTokenWarning
 
   const allBalances = useFetchAllBalances()
 
@@ -558,6 +590,17 @@ export default function AddLiquidity() {
         onValueChange={inputValue => {
           dispatchAddLiquidityState({ type: 'UPDATE_VALUE', payload: { value: inputValue, field: INPUT } })
         }}
+        extraTextClickHander={() => {
+          if (inputBalance) {
+            const valueToSet = inputBalance.sub(ethers.utils.parseEther('.1'))
+            if (valueToSet.gt(ethers.constants.Zero)) {
+              dispatchAddLiquidityState({
+                type: 'UPDATE_VALUE',
+                payload: { value: amountFormatter(valueToSet, 18, 18, false), field: INPUT }
+              })
+            }
+          }
+        }}
         selectedTokenAddress="ETH"
         value={inputValue}
         errorMessage={inputError}
@@ -572,13 +615,26 @@ export default function AddLiquidity() {
         title={t('deposit')}
         allBalances={allBalances}
         description={isNewExchange ? '' : outputValue ? `(${t('estimated')})` : ''}
-        extraText={outputBalance && formatBalance(amountFormatter(outputBalance, decimals, Math.min(decimals, 4)))}
+        extraText={
+          outputBalance && decimals && formatBalance(amountFormatter(outputBalance, decimals, Math.min(decimals, 4)))
+        }
         selectedTokenAddress={outputCurrency}
         onCurrencySelected={outputCurrency => {
           dispatchAddLiquidityState({ type: 'SELECT_CURRENCY', payload: outputCurrency })
         }}
         onValueChange={outputValue => {
           dispatchAddLiquidityState({ type: 'UPDATE_VALUE', payload: { value: outputValue, field: OUTPUT } })
+        }}
+        extraTextClickHander={() => {
+          if (outputBalance) {
+            dispatchAddLiquidityState({
+              type: 'UPDATE_VALUE',
+              payload: {
+                value: amountFormatter(calculateMaxOutputVal(outputBalance), decimals, decimals, false),
+                field: OUTPUT
+              }
+            })
+          }
         }}
         value={outputValue}
         showUnlock={showUnlock}

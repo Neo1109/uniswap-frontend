@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactGA from 'react-ga'
-import { useWeb3Context } from 'web3-react'
+import { createBrowserHistory } from 'history'
 import { ethers } from 'ethers'
 import styled from 'styled-components'
 
+import { useWeb3React, useExchangeContract } from '../../hooks'
 import { Button } from '../../theme'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import ContextualInfo from '../../components/ContextualInfo'
 import OversizedPanel from '../../components/OversizedPanel'
 import ArrowDown from '../../assets/svg/SVGArrowDown'
-
-import { useExchangeContract } from '../../hooks'
 import { useTransactionAdder } from '../../contexts/Transactions'
 import { useTokenDetails } from '../../contexts/Tokens'
 import { useAddressBalance } from '../../contexts/Balances'
@@ -141,14 +140,20 @@ function calculateSlippageBounds(value) {
   }
 }
 
-export default function RemoveLiquidity() {
-  const { library, account, active } = useWeb3Context()
+export default function RemoveLiquidity({ params }) {
   const { t } = useTranslation()
+  const { library, account, active } = useWeb3React()
 
   const addTransaction = useTransactionAdder()
 
-  const [outputCurrency, setOutputCurrency] = useState('')
-  const [value, setValue] = useState('')
+  // clear url of query
+  useEffect(() => {
+    const history = createBrowserHistory()
+    history.push(window.location.pathname + '')
+  }, [])
+
+  const [outputCurrency, setOutputCurrency] = useState(params.poolTokenAddress)
+  const [value, setValue] = useState(params.poolTokenAmount ? params.poolTokenAmount : '')
   const [inputError, setInputError] = useState()
   const [valueParsed, setValueParsed] = useState()
   // parse value

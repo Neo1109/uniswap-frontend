@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useReducer, useMemo, useCallback } from 'react'
 import { ethers } from 'ethers'
 import { getTokenReserves, getMarketDetails, BigNumber } from '@uniswap/sdk'
-import { useWeb3Context } from 'web3-react'
 
+import { useWeb3React } from '../hooks'
 import { safeAccess, isAddress, getEtherBalance, getTokenBalance } from '../utils'
 import { useAllTokenDetails } from './Tokens'
 
@@ -53,13 +53,13 @@ export default function Provider({ children }) {
 }
 
 export function useFetchAllBalances() {
-  const { account, networkId, library } = useWeb3Context()
+  const { library, chainId, account } = useWeb3React()
 
   const allTokens = useAllTokenDetails()
 
   const [state, { update }] = useAllBalancesContext()
 
-  const { allBalanceData } = safeAccess(state, [networkId, account]) || {}
+  const { allBalanceData } = safeAccess(state, [chainId, account]) || {}
 
   const getData = async () => {
     if (!!library && !!account) {
@@ -68,14 +68,12 @@ export function useFetchAllBalances() {
         Object.keys(allTokens).map(async k => {
           let balance = null
           let ethRate = null
-
           if (isAddress(k) || k === 'ETH') {
             if (k === 'ETH') {
               balance = await getEtherBalance(account, library).catch(() => null)
               ethRate = ONE
             } else {
               balance = await getTokenBalance(k, account, library).catch(() => null)
-
               // only get values for tokens with positive balances
               if (!!balance && balance.gt(ZERO)) {
                 const tokenReserves = await getTokenReserves(k, library).catch(() => null)
@@ -92,7 +90,7 @@ export function useFetchAllBalances() {
           }
         })
       )
-      update(newBalances, networkId, account)
+      update(newBalances, chainId, account)
     }
   }
 

@@ -1,13 +1,12 @@
 import React, { useState, useReducer, useEffect } from 'react'
 import ReactGA from 'react-ga'
-
-import { useTranslation } from 'react-i18next'
-import { useWeb3Context } from 'web3-react'
-
+import { createBrowserHistory } from 'history'
 import { ethers } from 'ethers'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '../../theme'
+import { useWeb3React } from '../../hooks'
 import CurrencyInputPanel from '../CurrencyInputPanel'
 import AddressInputPanel from '../AddressInputPanel'
 import OversizedPanel from '../OversizedPanel'
@@ -20,6 +19,7 @@ import { useTransactionAdder } from '../../contexts/Transactions'
 import { useAddressBalance, useExchangeReserves } from '../../contexts/Balances'
 import { useFetchAllBalances } from '../../contexts/AllBalances'
 import { useAddressAllowance } from '../../contexts/Allowances'
+import { useWalletModalToggle } from '../../contexts/Application'
 
 const INPUT = 0
 const OUTPUT = 1
@@ -119,13 +119,21 @@ function calculateEtherTokenInputFromOutput(outputAmount, inputReserve, outputRe
   return numerator.div(denominator).add(ethers.constants.One)
 }
 
-function getInitialSwapState(outputCurrency) {
+function getInitialSwapState(state) {
   return {
-    independentValue: '', // this is a user input
+    independentValue: state.exactFieldURL && state.exactAmountURL ? state.exactAmountURL : '', // this is a user input
     dependentValue: '', // this is a calculated number
-    independentField: INPUT,
-    inputCurrency: 'ETH',
-    outputCurrency: outputCurrency ? outputCurrency : ''
+    independentField: state.exactFieldURL === 'output' ? OUTPUT : INPUT,
+    inputCurrency: state.inputCurrencyURL ? state.inputCurrencyURL : 'ETH',
+    outputCurrency: state.outputCurrencyURL
+      ? state.outputCurrencyURL === 'ETH'
+        ? state.inputCurrencyURL && state.inputCurrencyURL !== 'ETH'
+          ? 'ETH'
+          : ''
+        : state.outputCurrencyURL
+      : state.initialCurrency
+      ? state.initialCurrency
+      : ''
   }
 }
 
@@ -235,14 +243,32 @@ function getMarketRate(
   }
 }
 
-export default function ExchangePage({ initialCurrency, sending }) {
+export default function ExchangePage({ initialCurrency, sending = false, params }) {
   const { t } = useTranslation()
-  const { account } = useWeb3Context()
+  const { account, error } = useWeb3React()
 
   const addTransaction = useTransactionAdder()
 
-  const [rawSlippage, setRawSlippage] = useState(ALLOWED_SLIPPAGE_DEFAULT)
-  const [rawTokenSlippage, setRawTokenSlippage] = useState(TOKEN_ALLOWED_SLIPPAGE_DEFAULT)
+  // check if URL specifies valid slippage, if so use as default
+  const initialSlippage = (token = false) => {
+    let slippage = Number.parseInt(params.slippage)
+    if (!isNaN(slippage) && (slippage === 0 || slippage >= 1)) {
+      return slippage // round to match custom input availability
+    }
+    // check for token <-> token slippage option
+    return token ? TOKEN_ALLOWED_SLIPPAGE_DEFAULT : ALLOWED_SLIPPAGE_DEFAULT
+  }
+
+  // check URL params for recipient, only on send page
+  const initialRecipient = () => {
+    if (sending && params.recipient) {
+      return params.recipient
+    }
+    return ''
+  }
+
+  const [rawSlippage, setRawSlippage] = useState(() => initialSlippage())
+  const [rawTokenSlippage, setRawTokenSlippage] = useState(() => initialSlippage(true))
 
   const allowedSlippageBig = ethers.utils.bigNumberify(rawSlippage)
   const tokenAllowedSlippageBig = ethers.utils.bigNumberify(rawTokenSlippage)
@@ -253,11 +279,24 @@ export default function ExchangePage({ initialCurrency, sending }) {
   }, [])
 
   // core swap state
-  const [swapState, dispatchSwapState] = useReducer(swapStateReducer, initialCurrency, getInitialSwapState)
+  const [swapState, dispatchSwapState] = useReducer(
+    swapStateReducer,
+    {
+      initialCurrency: initialCurrency,
+      inputCurrencyURL: params.inputCurrency,
+      outputCurrencyURL: params.outputCurrency,
+      exactFieldURL: params.exactField,
+      exactAmountURL: params.exactAmount
+    },
+    getInitialSwapState
+  )
 
   const { independentValue, dependentValue, independentField, inputCurrency, outputCurrency } = swapState
 
-  const [recipient, setRecipient] = useState({ address: '', name: '' })
+  const [recipient, setRecipient] = useState({
+    address: initialRecipient(),
+    name: ''
+  })
   const [recipientError, setRecipientError] = useState()
 
   // get swap type from the currency types
@@ -353,7 +392,6 @@ export default function ExchangePage({ initialCurrency, sending }) {
         setInputError(null)
         setShowUnlock(false)
       }
-
       return () => {
         setInputError()
         setShowUnlock(false)
@@ -380,7 +418,10 @@ export default function ExchangePage({ initialCurrency, sending }) {
             throw Error()
           }
 
-          dispatchSwapState({ type: 'UPDATE_DEPENDENT', payload: calculatedDependentValue })
+          dispatchSwapState({
+            type: 'UPDATE_DEPENDENT',
+            payload: calculatedDependentValue
+          })
         } catch {
           setIndependentError(t('insufficientLiquidity'))
         }
@@ -403,7 +444,10 @@ export default function ExchangePage({ initialCurrency, sending }) {
             throw Error()
           }
 
-          dispatchSwapState({ type: 'UPDATE_DEPENDENT', payload: calculatedDependentValue })
+          dispatchSwapState({
+            type: 'UPDATE_DEPENDENT',
+            payload: calculatedDependentValue
+          })
         } catch {
           setIndependentError(t('insufficientLiquidity'))
         }
@@ -433,7 +477,10 @@ export default function ExchangePage({ initialCurrency, sending }) {
             if (calculatedDependentValue.lte(ethers.constants.Zero)) {
               throw Error()
             }
-            dispatchSwapState({ type: 'UPDATE_DEPENDENT', payload: calculatedDependentValue })
+            dispatchSwapState({
+              type: 'UPDATE_DEPENDENT',
+              payload: calculatedDependentValue
+            })
           } else {
             const intermediateValue = calculateEtherTokenInputFromOutput(amount, reserveETHSecond, reserveTokenSecond)
             if (intermediateValue.lte(ethers.constants.Zero)) {
@@ -447,7 +494,10 @@ export default function ExchangePage({ initialCurrency, sending }) {
             if (calculatedDependentValue.lte(ethers.constants.Zero)) {
               throw Error()
             }
-            dispatchSwapState({ type: 'UPDATE_DEPENDENT', payload: calculatedDependentValue })
+            dispatchSwapState({
+              type: 'UPDATE_DEPENDENT',
+              payload: calculatedDependentValue
+            })
           }
         } catch {
           setIndependentError(t('insufficientLiquidity'))
@@ -467,6 +517,11 @@ export default function ExchangePage({ initialCurrency, sending }) {
     independentField,
     t
   ])
+
+  useEffect(() => {
+    const history = createBrowserHistory()
+    history.push(window.location.pathname + '')
+  }, [])
 
   const [inverted, setInverted] = useState(false)
   const exchangeRate = getExchangeRate(inputValueParsed, inputDecimals, outputValueParsed, outputDecimals)
@@ -580,7 +635,10 @@ export default function ExchangePage({ initialCurrency, sending }) {
     }
 
     const estimatedGasLimit = await estimate(...args, { value })
-    method(...args, { value, gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN) }).then(response => {
+    method(...args, {
+      value,
+      gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN)
+    }).then(response => {
       addTransaction(response)
     })
   }
@@ -588,6 +646,8 @@ export default function ExchangePage({ initialCurrency, sending }) {
   const [customSlippageError, setcustomSlippageError] = useState('')
 
   const allBalances = useFetchAllBalances()
+
+  const toggleWalletModal = useWalletModalToggle()
 
   return (
     <>
@@ -602,16 +662,25 @@ export default function ExchangePage({ initialCurrency, sending }) {
             if (valueToSet.gt(ethers.constants.Zero)) {
               dispatchSwapState({
                 type: 'UPDATE_INDEPENDENT',
-                payload: { value: amountFormatter(valueToSet, inputDecimals, inputDecimals, false), field: INPUT }
+                payload: {
+                  value: amountFormatter(valueToSet, inputDecimals, inputDecimals, false),
+                  field: INPUT
+                }
               })
             }
           }
         }}
         onCurrencySelected={inputCurrency => {
-          dispatchSwapState({ type: 'SELECT_CURRENCY', payload: { currency: inputCurrency, field: INPUT } })
+          dispatchSwapState({
+            type: 'SELECT_CURRENCY',
+            payload: { currency: inputCurrency, field: INPUT }
+          })
         }}
         onValueChange={inputValue => {
-          dispatchSwapState({ type: 'UPDATE_INDEPENDENT', payload: { value: inputValue, field: INPUT } })
+          dispatchSwapState({
+            type: 'UPDATE_INDEPENDENT',
+            payload: { value: inputValue, field: INPUT }
+          })
         }}
         showUnlock={showUnlock}
         selectedTokens={[inputCurrency, outputCurrency]}
@@ -637,10 +706,16 @@ export default function ExchangePage({ initialCurrency, sending }) {
         description={outputValueFormatted && independentField === INPUT ? estimatedText : ''}
         extraText={outputBalanceFormatted && formatBalance(outputBalanceFormatted)}
         onCurrencySelected={outputCurrency => {
-          dispatchSwapState({ type: 'SELECT_CURRENCY', payload: { currency: outputCurrency, field: OUTPUT } })
+          dispatchSwapState({
+            type: 'SELECT_CURRENCY',
+            payload: { currency: outputCurrency, field: OUTPUT }
+          })
         }}
         onValueChange={outputValue => {
-          dispatchSwapState({ type: 'UPDATE_INDEPENDENT', payload: { value: outputValue, field: OUTPUT } })
+          dispatchSwapState({
+            type: 'UPDATE_INDEPENDENT',
+            payload: { value: outputValue, field: OUTPUT }
+          })
         }}
         selectedTokens={[inputCurrency, outputCurrency]}
         selectedTokenAddress={outputCurrency}
@@ -655,7 +730,7 @@ export default function ExchangePage({ initialCurrency, sending }) {
               <DownArrow active={isValid} alt="arrow" />
             </DownArrowBackground>
           </OversizedPanel>
-          <AddressInputPanel onChange={setRecipient} onError={setRecipientError} />
+          <AddressInputPanel onChange={setRecipient} onError={setRecipientError} initialInput={recipient} />
         </>
       ) : (
         ''
@@ -714,11 +789,14 @@ export default function ExchangePage({ initialCurrency, sending }) {
       />
       <Flex>
         <Button
-          disabled={!isValid || customSlippageError === 'invalid'}
-          onClick={onSwap}
+          disabled={!account && !error ? false : !isValid || customSlippageError === 'invalid'}
+          onClick={account && !error ? onSwap : toggleWalletModal}
           warning={highSlippageWarning || customSlippageError === 'warning'}
+          loggedOut={!account}
         >
-          {sending
+          {!account
+            ? 'Connect to a Wallet'
+            : sending
             ? highSlippageWarning || customSlippageError === 'warning'
               ? t('sendAnyway')
               : t('send')
