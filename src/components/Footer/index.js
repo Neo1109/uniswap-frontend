@@ -86,6 +86,9 @@ export default function Footer() {
           <Link id="link" href="https://github.com/ChristophSiegenthaler/uniswap-frontend/">
             <h1 id="title">Code</h1>
           </Link>
+          <Link id="link" href="https://github.com/ChristophSiegenthaler/uniswap-frontend/">
+            <h1 id="title">v0.2</h1>
+          </Link>
         </Title>
       </FooterElement>
 
