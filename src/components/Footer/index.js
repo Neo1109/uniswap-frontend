@@ -83,11 +83,8 @@ export default function Footer() {
           <Link id="link" href="https://docs.uniswap.io/">
             <h1 id="title">Docs</h1>
           </Link>
-          <Link id="link" href="https://github.com/ChristophSiegenthaler/uniswap-frontend/">
-            <h1 id="title">Code</h1>
-          </Link>
-          <Link id="link" href="https://github.com/ChristophSiegenthaler/uniswap-frontend/">
-            <h1 id="title">v0.2</h1>
+          <Link id="link" href="https://github.com/ChristophSiegenthaler/uniswap-frontend/tree/ipfswapper-v0.3">
+            <h1 id="title">Code: ipfswapper-v0.3</h1>
           </Link>
         </Title>
       </FooterElement>
