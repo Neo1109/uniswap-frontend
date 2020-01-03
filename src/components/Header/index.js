@@ -63,8 +63,8 @@ export default function Header() {
               <img src={LogoUnicorn} alt="unicorn" height="80px" />
             </Link>
           </Nod>
-          <Link id="link" href="https://uniswap.io">
-            <h1 id="title">Uniswap</h1>
+          <Link id="link" href="https://uniswap.ch">
+            <h1 id="title">Uniswap.ch</h1>
           </Link>
         </Title>
       </HeaderElement>
