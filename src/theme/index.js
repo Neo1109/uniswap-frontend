@@ -69,7 +69,7 @@ const theme = darkMode => ({
   charcoalBlack: darkMode ? '#F2F2F2' : '#404040',
   // blues
   zumthorBlue: darkMode ? '#212529' : '#EBF4FF',
-  malibuBlue: darkMode ? '#E67AEF' : '#5CA2FF',
+  malibuBlue: darkMode ? '#2F80ED' : '#5CA2FF',
   royalBlue: darkMode ? '#2F80ED' : '#2F80ED',
   loadingBlue: darkMode ? '#e4f0ff' : '#e4f0ff',
   uniswapBlue: darkMode ? '#2F80ED' : '#2F80ED5',
@@ -92,7 +92,7 @@ const theme = darkMode => ({
   metaMaskOrange: '#E8831D',
 
   //specific
-  textHover: darkMode ? theme.uniswapPink : theme.doveGray,
+  textHover: darkMode ? theme.uniswapBlue : theme.doveGray,
 
   // connect button when loggedout
   buttonFaded: darkMode ? '#DC6BE5' : '#737373',

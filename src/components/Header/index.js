@@ -26,7 +26,7 @@ const Nod = styled.div`
   transition: transform 150ms ease-out;
 
   :hover {
-    transform: rotate(-10deg);
+    transform: rotate(-8deg);
   }
 `
 
@@ -60,7 +60,7 @@ export default function Header() {
         <Title>
           <Nod>
             <Link id="link" href="https://uniswap.ch">
-	      <img src={LogoUnicorn} alt="unicorn" height="70px" />
+              <img src={LogoUnicorn} alt="unicorn" height="80px" />
             </Link>
           </Nod>
           <Link id="link" href="https://uniswap.io">
