@@ -784,19 +784,23 @@ export default function ExchangePage({ initialCurrency, sending = false, params 
           }}
         >
           <ExchangeRate>{t('exchangeRate')}</ExchangeRate>
-          {inverted ? (
             <span>
               {exchangeRate
-                ? `1 ${inputSymbol} = ${amountFormatter(exchangeRate, 18, 6, false)} ${outputSymbol}`
+                ? `1 ${inputSymbol} = ${amountFormatter(exchangeRate, 18, 7, false)} ${outputSymbol}`
                 : ' - '}
             </span>
-          ) : (
+        </ExchangeRateWrapper>
+        <ExchangeRateWrapper
+          onClick={() => {
+            setInverted(inverted => !inverted)
+          }}
+	>
+          <ExchangeRate>{t('invertedRate')}</ExchangeRate>
             <span>
               {exchangeRate
-                ? `1 ${outputSymbol} = ${amountFormatter(exchangeRateInverted, 18, 6, false)} ${inputSymbol}`
+                ? `1 ${outputSymbol} = ${amountFormatter(exchangeRateInverted, 18, 7, false)} ${inputSymbol}`
                 : ' - '}
             </span>
-          )}
         </ExchangeRateWrapper>
       </OversizedPanel>
       <TransactionDetails

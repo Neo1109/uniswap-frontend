@@ -334,6 +334,7 @@ export default function RemoveLiquidity({ params }) {
   const isValid = inputError === null
 
   const marketRate = getMarketRate(exchangeETHBalance, exchangeTokenBalance, decimals)
+  const marketRateInverted = getMarketRate(exchangeTokenBalance, exchangeETHBalance, decimals)
 
   return (
     <>
@@ -385,7 +386,11 @@ export default function RemoveLiquidity({ params }) {
         <SummaryPanel>
           <ExchangeRateWrapper>
             <ExchangeRate>{t('exchangeRate')}</ExchangeRate>
-            {marketRate ? <span>{`1 ETH = ${amountFormatter(marketRate, 18, 4)} ${symbol}`}</span> : ' - '}
+            {marketRate ? <span>{`1 ETH = ${amountFormatter(marketRate, 18, 7)} ${symbol}`}</span> : ' - '}
+          </ExchangeRateWrapper>
+          <ExchangeRateWrapper>
+            <ExchangeRate>{t('invertedRate')}</ExchangeRate>
+            {marketRate ? <span>{`1 ${symbol} = ${amountFormatter(marketRateInverted, 18, 7)} ETH`}</span> : ' - '}
           </ExchangeRateWrapper>
           <ExchangeRateWrapper>
             <ExchangeRate>{t('currentPoolSize')}</ExchangeRate>

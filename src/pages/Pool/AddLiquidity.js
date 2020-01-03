@@ -643,7 +643,11 @@ export default function AddLiquidity({ params }) {
         <SummaryPanel>
           <ExchangeRateWrapper>
             <ExchangeRate>{t('exchangeRate')}</ExchangeRate>
-            <span>{marketRate ? `1 ETH = ${amountFormatter(marketRate, 18, 4)} ${symbol}` : ' - '}</span>
+            <span>{marketRate ? `1 ETH = ${amountFormatter(marketRate, 18, 7)} ${symbol}` : ' - '}</span>
+          </ExchangeRateWrapper>
+          <ExchangeRateWrapper>
+            <ExchangeRate>{t('invertedRate')}</ExchangeRate>
+            <span>{marketRate ? `1 ${symbol} = ${amountFormatter(marketRateInverted, 18, 7)} ETH` : ' - '}</span>
           </ExchangeRateWrapper>
           <ExchangeRateWrapper>
             <ExchangeRate>{t('currentPoolSize')}</ExchangeRate>
