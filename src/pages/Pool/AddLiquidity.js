@@ -471,7 +471,7 @@ export default function AddLiquidity({ params }) {
         setOutputValueParsed(currencyAmount)
         dispatchAddLiquidityState({
           type: 'UPDATE_DEPENDENT_VALUE',
-          payload: { field: OUTPUT, value: amountFormatter(currencyAmount, decimals, Math.min(decimals, 4), false) }
+          payload: { field: OUTPUT, value: amountFormatter(currencyAmount, decimals, Math.min(decimals, 6), false) }
         })
 
         return () => {
@@ -514,7 +514,7 @@ export default function AddLiquidity({ params }) {
         setInputValueParsed(currencyAmount)
         dispatchAddLiquidityState({
           type: 'UPDATE_DEPENDENT_VALUE',
-          payload: { field: INPUT, value: amountFormatter(currencyAmount, 18, 4, false) }
+          payload: { field: INPUT, value: amountFormatter(currencyAmount, 18, 7, false) }
         })
 
         return () => {
@@ -667,7 +667,7 @@ export default function AddLiquidity({ params }) {
             </ExchangeRate>
             <span>
               {ethShare && tokenShare
-                ? `${amountFormatter(ethShare, 18, 4)} ETH + ${amountFormatter(
+                ? `${amountFormatter(ethShare, 18, 6)} ETH + ${amountFormatter(
                     tokenShare,
                     decimals,
                     Math.min(4, decimals)
