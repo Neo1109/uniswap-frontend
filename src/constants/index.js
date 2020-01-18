@@ -32,7 +32,7 @@ export const SUPPORTED_WALLETS = {
   },
   WALLET_CONNECT: {
     connector: walletconnect,
-    name: 'Wallet Connect',
+    name: 'WalletConnect',
     iconName: 'walletConnectIcon.svg',
     description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
     href: null,
@@ -88,7 +88,8 @@ export const SUPPORTED_WALLETS = {
 export const brokenTokens = [
   '0xB8c77482e45F1F44dE1745F52C74426C631bDD52',
   '0x95dAaaB98046846bF4B2853e23cba236fa394A31',
-  '0x55296f69f40Ea6d20E478533C15A6B08B654E758'
+  '0x55296f69f40Ea6d20E478533C15A6B08B654E758',
+  '0xc3761EB917CD790B30dAD99f6Cc5b4Ff93C4F9eA'
 ]
 
 export const NetworkContextName = 'NETWORK'
