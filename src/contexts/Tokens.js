@@ -26,7 +26,7 @@ const ETH = {
   }
 }
 
-const INITIAL_TOKENS_CONTEXT = {
+export const INITIAL_TOKENS_CONTEXT = {
   1: {
     '0xB6eD7644C69416d67B522e20bC294A9a9B405B31': {
       [NAME]: '0xBitcoin Token',
@@ -51,6 +51,12 @@ const INITIAL_TOKENS_CONTEXT = {
       [SYMBOL]: 'AMPL',
       [DECIMALS]: 9,
       [EXCHANGE_ADDRESS]: '0x042dBBDc27F75d277C3D99efE327DB21Bc4fde75'
+    },
+    '0xcD62b1C403fa761BAadFC74C525ce2B51780b184': {
+      [NAME]: 'Aragon Network Juror',
+      [SYMBOL]: 'ANJ',
+      [DECIMALS]: 18,
+      [EXCHANGE_ADDRESS]: '0x64A9edD3f5fce0252Cd708E26c8dd11205742826'
     },
     '0x960b236A07cf122663c4303350609A66A7B288C0': {
       [NAME]: 'Aragon Network Token',
@@ -668,7 +674,6 @@ export function useTokenDetails(tokenAddress) {
       library
     ) {
       let stale = false
-
       const namePromise = getTokenName(tokenAddress, library).catch(() => null)
       const symbolPromise = getTokenSymbol(tokenAddress, library).catch(() => null)
       const decimalsPromise = getTokenDecimals(tokenAddress, library).catch(() => null)
